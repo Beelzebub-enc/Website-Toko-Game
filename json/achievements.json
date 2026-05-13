@@ -1,0 +1,82 @@
+[
+  {
+    "id": "a1",
+    "name": "First Purchase",
+    "icon": "🎮",
+    "desc": "Lakukan pembelian pertamamu",
+    "pts": 100,
+    "type": "purchase",
+    "req": 1,
+    "rarity": "common"
+  },
+  {
+    "id": "a2",
+    "name": "Cart Collector",
+    "icon": "🛒",
+    "desc": "Tambahkan 5 item ke keranjang",
+    "pts": 50,
+    "type": "cart",
+    "req": 5,
+    "rarity": "common"
+  },
+  {
+    "id": "a3",
+    "name": "Wishlist Dreamer",
+    "icon": "❤️",
+    "desc": "Simpan 3 game ke wishlist",
+    "pts": 30,
+    "type": "wishlist",
+    "req": 3,
+    "rarity": "common"
+  },
+  {
+    "id": "a4",
+    "name": "Big Spender",
+    "icon": "💎",
+    "desc": "Total belanja lebih dari Rp 1.000.000",
+    "pts": 500,
+    "type": "spend",
+    "req": 1000000,
+    "rarity": "epic"
+  },
+  {
+    "id": "a5",
+    "name": "Game Critic",
+    "icon": "⭐",
+    "desc": "Berikan rating pada 3 produk",
+    "pts": 75,
+    "type": "review",
+    "req": 3,
+    "rarity": "rare"
+  },
+  {
+    "id": "a6",
+    "name": "Loyal Gamer",
+    "icon": "👑",
+    "desc": "Login 7 hari berturut-turut",
+    "pts": 200,
+    "type": "streak",
+    "req": 7,
+    "rarity": "rare"
+  },
+  {
+    "id": "a7",
+    "name": "Deal Hunter",
+    "icon": "🔥",
+    "desc": "Gunakan voucher diskon pertamamu",
+    "pts": 50,
+    "type": "voucher",
+    "req": 1,
+    "rarity": "common"
+  },
+  {
+    "id": "a8",
+    "name": "Game Library",
+    "icon": "📚",
+    "desc": "Miliki 5 game di perpustakaan",
+    "pts": 300,
+    "type": "purchase",
+    "req": 5,
+    "rarity": "epic"
+  }
+]
