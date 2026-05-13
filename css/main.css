@@ -1271,5 +1271,4 @@ button:focus-visible,a:focus-visible,input:focus-visible { outline:2px solid var
 .support-card:hover .support-action svg {
   transform: translateX(3px);
   transition: transform .2s var(--ease);
-              }
-                                      
+}
