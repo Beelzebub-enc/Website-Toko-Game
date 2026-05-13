@@ -1,0 +1,72 @@
+[
+  {
+    "id": "v1",
+    "code": "MARKET10",
+    "type": "pct",
+    "value": 10,
+    "minBuy": 100000,
+    "maxSave": 50000,
+    "desc": "Diskon 10% untuk semua pembelian",
+    "exp": "2026-12-31",
+    "active": true,
+    "limit": 1000,
+    "used": 234,
+    "builtin": true
+  },
+  {
+    "id": "v2",
+    "code": "NEWUSER25",
+    "type": "pct",
+    "value": 25,
+    "minBuy": 200000,
+    "maxSave": 100000,
+    "desc": "Diskon 25% untuk pengguna baru",
+    "exp": "2026-12-31",
+    "active": true,
+    "limit": 500,
+    "used": 156,
+    "builtin": true
+  },
+  {
+    "id": "v3",
+    "code": "FLASH50",
+    "type": "pct",
+    "value": 50,
+    "minBuy": 400000,
+    "maxSave": 200000,
+    "desc": "Flash Sale — Diskon 50% terbatas!",
+    "exp": "2026-06-30",
+    "active": true,
+    "limit": 100,
+    "used": 87,
+    "builtin": true
+  },
+  {
+    "id": "v4",
+    "code": "FLAT75K",
+    "type": "flat",
+    "value": 75000,
+    "minBuy": 250000,
+    "maxSave": 75000,
+    "desc": "Potongan langsung Rp 75.000",
+    "exp": "2026-09-30",
+    "active": true,
+    "limit": 300,
+    "used": 45,
+    "builtin": true
+  },
+  {
+    "id": "v5",
+    "code": "GAMER2026",
+    "type": "pct",
+    "value": 15,
+    "minBuy": 150000,
+    "maxSave": 75000,
+    "desc": "Voucher Gamer 2026 — 15% off",
+    "exp": "2026-12-31",
+    "active": true,
+    "limit": 800,
+    "used": 312,
+    "builtin": true
+  }
+]

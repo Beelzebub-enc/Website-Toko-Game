@@ -1,0 +1,363 @@
+[
+  {
+    "id": 1,
+    "name": "Cyberpunk 2077",
+    "developer": "CD Projekt Red",
+    "publisher": "CD Projekt",
+    "price": 299000,
+    "originalPrice": 599000,
+    "discount": 50,
+    "rating": 4.5,
+    "reviews": 128470,
+    "genre": [
+      "RPG",
+      "Action",
+      "Open World"
+    ],
+    "platform": [
+      "PC",
+      "PS5",
+      "Xbox Series X"
+    ],
+    "localImage": "images/cyberpunk2077.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
+    "description": "RPG aksi open-world di Night City 2077. Mainkan V, tentara bayaran yang berjuang demi keabadian melawan megakorporasi.",
+    "fullDesc": "Night City, 2077. Kota yang tidak pernah tidur — dikuasai megakorporasi, penuh kejahatan terorganisir, dan modifikasi tubuh. Kamu adalah V, seorang merc yang mencari namanya di kota ini. Sebuah implant misterius membawa jiwa rocker legendaris Johnny Silverhand ke dalam tubuhmu. Bersama-sama kalian harus menemukan cara untuk bertahan hidup di kota yang tak kenal belas kasihan.",
+    "tags": [
+      "Bestseller",
+      "Award Winner",
+      "DLC Available"
+    ],
+    "featured": true,
+    "releaseDate": "2020-12-10",
+    "ageRating": "17+",
+    "achievements": 45,
+    "size": "70 GB",
+    "metacritic": 86
+  },
+  {
+    "id": 2,
+    "name": "Red Dead Redemption 2",
+    "developer": "Rockstar Games",
+    "publisher": "Rockstar Games",
+    "price": 349000,
+    "originalPrice": 699000,
+    "discount": 50,
+    "rating": 4.9,
+    "reviews": 285630,
+    "genre": [
+      "Action",
+      "Adventure",
+      "Open World"
+    ],
+    "platform": [
+      "PC",
+      "PS4",
+      "Xbox One"
+    ],
+    "localImage": "images/rdr2.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg",
+    "description": "Epos koboi Amerika 1899. Arthur Morgan berjuang antara loyalitas dan nuraninya di dunia yang berubah.",
+    "fullDesc": "Amerika 1899. Kejayaan koboi perlahan memudar. Arthur Morgan, anggota setia geng Van der Linde, terjebak antara loyalitas kepada Dutch dan nuraninya sendiri. Di antara keindahan alam Amerika yang tiada duanya — pegunungan salju, padang rumput luas, kota-kota kecil penuh karakter — tersimpan kisah epik tentang kehormatan, pengkhianatan, dan penebusan.",
+    "tags": [
+      "Masterpiece",
+      "Top Rated",
+      "Bestseller"
+    ],
+    "featured": true,
+    "releaseDate": "2019-11-05",
+    "ageRating": "17+",
+    "achievements": 52,
+    "size": "150 GB",
+    "metacritic": 97
+  },
+  {
+    "id": 3,
+    "name": "Elden Ring",
+    "developer": "FromSoftware",
+    "publisher": "Bandai Namco",
+    "price": 449000,
+    "originalPrice": 649000,
+    "discount": 31,
+    "rating": 4.8,
+    "reviews": 192340,
+    "genre": [
+      "RPG",
+      "Action",
+      "Souls-like"
+    ],
+    "platform": [
+      "PC",
+      "PS5",
+      "Xbox Series X"
+    ],
+    "localImage": "images/eldenring.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
+    "description": "RPG aksi epik dari FromSoftware & George R.R. Martin. Pemenang GOTY 2022 dengan dunia terbuka luar biasa.",
+    "fullDesc": "The Elden Ring telah hancur. Tarnished dipanggil kembali ke Lands Between — dunia terbuka luas yang gelap dan indah. Kumpulkan Rune Besar, taklukkan Demigod yang korup, dan wujudkan takdirmu sebagai Elden Lord. Hasil kolaborasi Hidetaka Miyazaki dan George R.R. Martin ini mendefinisikan ulang genre RPG aksi.",
+    "tags": [
+      "GOTY 2022",
+      "Top Rated",
+      "Challenging"
+    ],
+    "featured": true,
+    "releaseDate": "2022-02-25",
+    "ageRating": "16+",
+    "achievements": 42,
+    "size": "60 GB",
+    "metacritic": 96
+  },
+  {
+    "id": 4,
+    "name": "God of War Ragnarök",
+    "developer": "Santa Monica Studio",
+    "publisher": "PlayStation Studios",
+    "price": 549000,
+    "originalPrice": 749000,
+    "discount": 27,
+    "rating": 4.9,
+    "reviews": 345210,
+    "genre": [
+      "Action",
+      "Adventure",
+      "Story"
+    ],
+    "platform": [
+      "PS5",
+      "PS4",
+      "PC"
+    ],
+    "localImage": "images/godofwar.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/2322010/header.jpg",
+    "description": "Kratos dan Atreus melawan takdir di Sembilan Alam Norse. Ragnarök mendekat — perang akhir dunia dimulai.",
+    "fullDesc": "Tiga tahun setelah pertempuran dengan Baldur, Fimbulwinter menyelimuti Midgard dengan es dan kegelapan. Odin dan Thor mengincar Kratos dan Atreus. Perjalanan menembus seluruh Sembilan Alam Norse menghadirkan kisah ayah-anak yang paling mengharukan dalam sejarah gaming, dengan combat yang lebih epik dari sebelumnya.",
+    "tags": [
+      "GOTY 2022",
+      "Masterpiece",
+      "PS Exclusive"
+    ],
+    "featured": true,
+    "releaseDate": "2022-11-09",
+    "ageRating": "17+",
+    "achievements": 36,
+    "size": "90 GB",
+    "metacritic": 94
+  },
+  {
+    "id": 5,
+    "name": "The Witcher 3: Wild Hunt",
+    "developer": "CD Projekt Red",
+    "publisher": "CD Projekt",
+    "price": 99000,
+    "originalPrice": 399000,
+    "discount": 75,
+    "rating": 4.9,
+    "reviews": 458230,
+    "genre": [
+      "RPG",
+      "Open World",
+      "Story"
+    ],
+    "platform": [
+      "PC",
+      "PS5",
+      "Xbox",
+      "Switch"
+    ],
+    "localImage": "images/witcher3.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg",
+    "description": "Geralt of Rivia mencari Ciri di open-world terbaik sepanjang masa. RPG legendaris yang tak lekang oleh waktu.",
+    "fullDesc": "Perang menyapu Kontinen sementara Wild Hunt — pasukan hantu antardimensi — memburu Ciri, putri angkat Geralt. Dari hutan gelap Velen hingga pulau-pulau Skellige yang bersalju, dari kota Novigrad yang hiruk-pikuk hingga istana Toussaint yang indah, setiap sudut dunia menyimpan kisah yang kaya dan berkesan.",
+    "tags": [
+      "All-Time Classic",
+      "GOTY",
+      "Best RPG"
+    ],
+    "featured": false,
+    "releaseDate": "2015-05-19",
+    "ageRating": "17+",
+    "achievements": 78,
+    "size": "50 GB",
+    "metacritic": 93
+  },
+  {
+    "id": 6,
+    "name": "Grand Theft Auto V",
+    "developer": "Rockstar Games",
+    "publisher": "Rockstar Games",
+    "price": 149000,
+    "originalPrice": 299000,
+    "discount": 50,
+    "rating": 4.7,
+    "reviews": 672340,
+    "genre": [
+      "Action",
+      "Open World",
+      "Multiplayer"
+    ],
+    "platform": [
+      "PC",
+      "PS5",
+      "Xbox Series X"
+    ],
+    "localImage": "images/gtav.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg",
+    "description": "Los Santos. Tiga protagonist, satu kota kriminal kolosal, dan GTA Online yang terus berkembang.",
+    "fullDesc": "Michael, mantan perampok bank yang pensiun hidup nyaman. Trevor, psikopat berbahaya yang tak bisa dihentikan. Franklin, pencuri muda dengan ambisi besar. Tiga kehidupan berbeda bertabrakan dalam satu heist terbesar yang pernah ada. Los Santos — kota yang tak pernah tidur — menanti dengan segala kemewahan dan bahayanya.",
+    "tags": [
+      "Legend",
+      "Bestseller",
+      "Online Multiplayer"
+    ],
+    "featured": false,
+    "releaseDate": "2015-04-14",
+    "ageRating": "17+",
+    "achievements": 58,
+    "size": "95 GB",
+    "metacritic": 97
+  },
+  {
+    "id": 7,
+    "name": "Baldur's Gate 3",
+    "developer": "Larian Studios",
+    "publisher": "Larian Studios",
+    "price": 499000,
+    "originalPrice": 649000,
+    "discount": 23,
+    "rating": 4.9,
+    "reviews": 221450,
+    "genre": [
+      "RPG",
+      "Turn-based",
+      "Co-op"
+    ],
+    "platform": [
+      "PC",
+      "PS5",
+      "Xbox Series X"
+    ],
+    "localImage": "images/bg3.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg",
+    "description": "RPG turn-based D&D terbaik sepanjang masa. Cacing illithid di kepalamu, nasib Faerûn di tanganmu.",
+    "fullDesc": "Seekor cacing illithid ditanamkan di kepalamu, mengancam mengubahmu menjadi Monster. Dalam perjalanan mencari kesembuhan, kamu terseret ke dalam konspirasi yang mengancam seluruh Forgotten Realms. Dengan sistem D&D 5e yang autentik, ribuan dialog, ratusan jam konten, dan multiplayer co-op penuh.",
+    "tags": [
+      "GOTY 2023",
+      "Best RPG",
+      "Co-op"
+    ],
+    "featured": true,
+    "releaseDate": "2023-08-03",
+    "ageRating": "17+",
+    "achievements": 54,
+    "size": "122 GB",
+    "metacritic": 96
+  },
+  {
+    "id": 8,
+    "name": "Hollow Knight",
+    "developer": "Team Cherry",
+    "publisher": "Team Cherry",
+    "price": 79000,
+    "originalPrice": 149000,
+    "discount": 47,
+    "rating": 4.8,
+    "reviews": 314560,
+    "genre": [
+      "Metroidvania",
+      "Action",
+      "Indie"
+    ],
+    "platform": [
+      "PC",
+      "PS4",
+      "Xbox",
+      "Switch"
+    ],
+    "localImage": "images/hollowknight.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/367520/header.jpg",
+    "description": "Masterpiece metroidvania hand-drawn. Jelajahi kerajaan serangga bawah tanah dengan combat presisi dan lore mendalam.",
+    "fullDesc": "Hallownest — kerajaan serangga bawah tanah yang jatuh karena wabah kuno. Knight kecil bersenjatakan jarum turun ke kedalaman yang gelap. Di balik estetika hand-drawn yang memukau tersimpan sistem combat yang memerlukan presisi tinggi, boss fights ikonik, dan world-building yang extraordinarily rich.",
+    "tags": [
+      "Indie Gem",
+      "Masterpiece",
+      "Top Rated"
+    ],
+    "featured": false,
+    "releaseDate": "2017-02-24",
+    "ageRating": "10+",
+    "achievements": 63,
+    "size": "9 GB",
+    "metacritic": 87
+  },
+  {
+    "id": 9,
+    "name": "Starfield",
+    "developer": "Bethesda Game Studios",
+    "publisher": "Xbox Game Studios",
+    "price": 399000,
+    "originalPrice": 599000,
+    "discount": 33,
+    "rating": 4.2,
+    "reviews": 167890,
+    "genre": [
+      "RPG",
+      "Sci-Fi",
+      "Exploration"
+    ],
+    "platform": [
+      "PC",
+      "Xbox Series X"
+    ],
+    "localImage": "images/starfield.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/header.jpg",
+    "description": "Jelajahi 1000+ planet di galaksi tak terbatas. RPG space exploration terbaru dari Bethesda.",
+    "fullDesc": "Tahun 2330. Humanity telah menjangkau bintang-bintang, mendirikan koloni di berbagai sudut galaksi. Sebagai anggota Constellation — penjelajah terakhir — kamu menemukan artefak misterius yang menarik perhatian semua faksi galaksi. Petualangan di antara bintang-bintang dengan kedalaman RPG khas Bethesda.",
+    "tags": [
+      "New Universe",
+      "Sci-Fi",
+      "Space Exploration"
+    ],
+    "featured": false,
+    "releaseDate": "2023-09-06",
+    "ageRating": "16+",
+    "achievements": 50,
+    "size": "140 GB",
+    "metacritic": 83
+  },
+  {
+    "id": 10,
+    "name": "Sekiro: Shadows Die Twice",
+    "developer": "FromSoftware",
+    "publisher": "Activision",
+    "price": 279000,
+    "originalPrice": 479000,
+    "discount": 42,
+    "rating": 4.7,
+    "reviews": 145230,
+    "genre": [
+      "Action",
+      "Souls-like",
+      "Stealth"
+    ],
+    "platform": [
+      "PC",
+      "PS4",
+      "Xbox One"
+    ],
+    "localImage": "images/sekiro.svg",
+    "steamImg": "https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg",
+    "description": "Wolf, shinobi satu lengan membalas dendam di Jepang feodal. Combat katana paling presisi yang pernah ada.",
+    "fullDesc": "Sengoku Jepang abad ke-16. Wolf kehilangan lengan kirinya dalam pertempuran yang hampir merenggut nyawanya. Dilengkapi prostesis besi penuh gadget mematikan dari pandai besi misterius, Wolf memulai perjalanan balas dendam sambil melindungi tuannya. Sistem combat berbasis posture dan timing yang revolusioner.",
+    "tags": [
+      "GOTY 2019",
+      "Award Winner",
+      "Hardcore"
+    ],
+    "featured": true,
+    "releaseDate": "2019-03-22",
+    "ageRating": "16+",
+    "achievements": 34,
+    "size": "14 GB",
+    "metacritic": 90
+  }
+]

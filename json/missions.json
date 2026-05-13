@@ -1,0 +1,57 @@
+[
+  {
+    "id": "m1",
+    "name": "Daily Login",
+    "icon": "📅",
+    "desc": "Login ke Market L hari ini",
+    "reward": 10,
+    "rewardType": "pts",
+    "mtype": "daily",
+    "ctype": "login",
+    "req": 1
+  },
+  {
+    "id": "m2",
+    "name": "Browse & Discover",
+    "icon": "🔍",
+    "desc": "Lihat detail 3 produk hari ini",
+    "reward": 20,
+    "rewardType": "pts",
+    "mtype": "daily",
+    "ctype": "view",
+    "req": 3
+  },
+  {
+    "id": "m3",
+    "name": "Weekly Shopper",
+    "icon": "🛍️",
+    "desc": "Beli 2 game minggu ini",
+    "reward": 150,
+    "rewardType": "pts",
+    "mtype": "weekly",
+    "ctype": "purchase",
+    "req": 2
+  },
+  {
+    "id": "m4",
+    "name": "Share the Love",
+    "icon": "💌",
+    "desc": "Tambahkan 3 game ke wishlist minggu ini",
+    "reward": 50,
+    "rewardType": "pts",
+    "mtype": "weekly",
+    "ctype": "wishlist",
+    "req": 3
+  },
+  {
+    "id": "m5",
+    "name": "Monthly Champion",
+    "icon": "🏆",
+    "desc": "Belanja lebih dari Rp 500.000 bulan ini",
+    "reward": "MARKET10",
+    "rewardType": "voucher",
+    "mtype": "monthly",
+    "ctype": "spend",
+    "req": 500000
+  }
+]
