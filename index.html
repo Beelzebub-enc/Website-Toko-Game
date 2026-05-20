@@ -12,6 +12,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/main.css">
+  <!-- © 2026 ELTzy — Market L by ELTzy · All rights. All rights reserved. Unauthorized copying prohibited. -->
+  <!-- ELTzy-WATERMARK: 454c547a795f4d61726b65744c5f574154455f4d41524b -->
+  <meta name="author" content="ELTzy">
+  <meta name="copyright" content="© 2026 ELTzy — All Rights Reserved">
 </head>
 <body>
 
@@ -104,7 +108,8 @@
     <div class="hero-grid-lines"></div>
     <div class="hero-content">
       <div class="hero-text">
-        <div class="hero-eyebrow">✦ Game Marketplace 2026</div>
+        <div id="heroClock" style="position:absolute;top:16px;right:20px;font-size:.72rem;color:rgba(255,255,255,.4);font-family:monospace;z-index:2;pointer-events:none"></div>
+      <div class="hero-eyebrow">✦ Game Marketplace 2026</div>
         <h1 class="hero-title">Dunia Game<br><span class="g">Terlaris</span><br>di Satu Tempat</h1>
         <p id="heroDev" class="hero-dev-txt">Memuat koleksi game...</p>
         <div class="hero-price-row">
@@ -470,7 +475,7 @@
       <div class="info-card reveal"><div class="ic-title">1. Penerimaan Syarat</div><div class="ic-body">Dengan mengakses dan menggunakan layanan Market L, kamu menyetujui untuk terikat oleh Syarat dan Ketentuan ini beserta Kebijakan Privasi kami. Jika tidak setuju dengan salah satu syarat, mohon untuk tidak menggunakan layanan kami.</div></div>
       <div class="info-card reveal"><div class="ic-title">2. Akun Pengguna</div><div class="ic-body">Setiap pengguna hanya boleh memiliki satu akun aktif. Akun tidak dapat dipindahtangankan. Kamu bertanggung jawab penuh menjaga kerahasiaan password dan semua aktivitas yang terjadi di bawah akunmu. Laporkan segera ke support@marketl.id jika ada akses tidak sah.</div></div>
       <div class="info-card reveal"><div class="ic-title">3. Pembelian &amp; Pembayaran</div><div class="ic-body">Semua harga ditampilkan dalam Rupiah (IDR). Pembelian bersifat final kecuali terdapat cacat teknis dari pihak kami. Market L berhak mengubah harga kapan saja. Voucher diskon memiliki syarat dan masa berlaku yang harus dipenuhi sebelum digunakan.</div></div>
-      <div class="info-card reveal"><div class="ic-title">4. Hak Kekayaan Intelektual</div><div class="ic-body">Semua konten di Market L dilindungi hak cipta © 2026 Market L. Game dan konten digital yang dibeli hanya untuk penggunaan pribadi non-komersial. Dilarang mendistribusikan, memodifikasi, atau menjual kembali produk yang dibeli dari Market L.</div></div>
+      <div class="info-card reveal"><div class="ic-title">4. Hak Kekayaan Intelektual</div><div class="ic-body">Semua konten di Market L dilindungi hak cipta © 2026 Market L by ELTzy · All rights. Game dan konten digital yang dibeli hanya untuk penggunaan pribadi non-komersial. Dilarang mendistribusikan, memodifikasi, atau menjual kembali produk yang dibeli dari Market L.</div></div>
       <div class="info-card reveal"><div class="ic-title">5. Batasan Tanggung Jawab</div><div class="ic-body">Market L tidak bertanggung jawab atas kerugian tidak langsung atau konsekuensial yang timbul dari penggunaan layanan. Tanggung jawab maksimal kami terbatas pada nilai transaksi yang dipersengketakan dalam periode 30 hari terakhir.</div></div>
       <div class="info-card reveal"><div class="ic-title">6. Hukum yang Berlaku</div><div class="ic-body">Syarat dan Ketentuan ini diatur oleh hukum Republik Indonesia. Setiap sengketa yang timbul akan diselesaikan melalui mediasi terlebih dahulu, dan jika tidak berhasil, melalui Pengadilan Negeri Jakarta Pusat sebagai yurisdiksi yang dipilih.</div></div>
     </div>
@@ -514,7 +519,7 @@
       </div>
     </div>
     <div class="ft-bottom">
-      <p class="ft-copy">© 2026 Market L. All rights reserved. Dibuat dengan ❤️ di Indonesia.</p>
+      <p class="ft-copy">© 2026 Market L by ELTzy · All rights. All rights reserved. Dibuat dengan ❤️ di Indonesia.</p>
       <div class="ft-socials">
         <div class="ft-soc" title="Instagram">📷</div>
         <div class="ft-soc" title="X / Twitter">✕</div>
@@ -592,7 +597,7 @@
       <div class="sum-row disc" id="cartDiscRow" style="display:none"><span>Diskon Voucher</span><span id="cartDisc">-Rp 0</span></div>
     </div>
     <div class="sum-total"><span>Total Pembayaran</span><span id="cartTot">Rp 0</span></div>
-    <button class="checkout-btn" onclick="ML.checkout()">Checkout Sekarang</button>
+    <button class="checkout-btn" onclick="ML.openPayment()">Checkout Sekarang</button>
   </div>
 </div>
 
@@ -609,7 +614,12 @@
     <div id="loginPanel">
       <form id="loginForm">
         <div class="form-grp"><label class="form-lbl">Email</label><input id="liEmail" class="form-inp" type="email" placeholder="nama@email.com" required autocomplete="email"></div>
-        <div class="form-grp"><label class="form-lbl">Password</label><input id="liPass" class="form-inp" type="password" placeholder="Minimal 6 karakter" required autocomplete="current-password"></div>
+        <div class="form-grp"><label class="form-lbl">Password</label><div class="pass-inp-wrap">
+          <input id="liPass" class="form-inp pass-inp" type="password" placeholder="Minimal 6 karakter" required autocomplete="current-password">
+          <button type="button" class="pass-toggle" data-target="liPass" aria-label="Lihat password">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div></div>
         <button id="loginBtn" class="form-btn" type="submit">Masuk Sekarang</button>
       </form>
       <div class="auth-div"><div class="auth-div-line"></div><span class="auth-div-txt">atau</span><div class="auth-div-line"></div></div>
@@ -623,7 +633,12 @@
         <div class="form-grp"><label class="form-lbl">Nama Lengkap</label><input id="rgName" class="form-inp" type="text" placeholder="Nama kamu" required autocomplete="name"></div>
         <div class="form-grp"><label class="form-lbl">Email</label><input id="rgEmail" class="form-inp" type="email" placeholder="nama@email.com" required autocomplete="email"></div>
         <div class="form-grp"><label class="form-lbl">Password</label>
-        <input id="rgPass" class="form-inp" type="password" placeholder="Minimal 6 karakter" required autocomplete="new-password">
+        <div class="pass-inp-wrap">
+          <input id="rgPass" class="form-inp pass-inp" type="password" placeholder="Minimal 6 karakter" required autocomplete="new-password">
+          <button type="button" class="pass-toggle" data-target="rgPass" aria-label="Lihat password">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
         <div style="margin-top:7px">
           <div style="height:3px;background:var(--b1a);border-radius:99px;overflow:hidden">
             <div id="passStrBar" style="height:100%;width:0;background:var(--b1a);border-radius:99px;transition:width .3s,background .3s"></div>
@@ -631,7 +646,12 @@
           <div id="passStrLbl" style="font-size:.68rem;color:var(--w40);margin-top:4px;height:14px"></div>
         </div>
       </div>
-        <div class="form-grp"><label class="form-lbl">Konfirmasi Password</label><input id="rgPass2" class="form-inp" type="password" placeholder="Ulangi password" required autocomplete="new-password"></div>
+        <div class="form-grp"><label class="form-lbl">Konfirmasi Password</label><div class="pass-inp-wrap">
+          <input id="rgPass2" class="form-inp pass-inp" type="password" placeholder="Ulangi password" required autocomplete="new-password">
+          <button type="button" class="pass-toggle" data-target="rgPass2" aria-label="Lihat password">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div></div>
         <button id="regBtn" class="form-btn" type="submit">Buat Akun</button>
       </form>
       <div class="auth-div"><div class="auth-div-line"></div><span class="auth-div-txt">atau</span><div class="auth-div-line"></div></div>
@@ -677,6 +697,254 @@
       <div class="adm-sec-title">🎮 Daftar Produk</div>
       <div id="admProdList"></div>
     </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAYMENT MODAL
+═══════════════════════════════════════════ -->
+<div id="payModal" class="pay-modal-wrap" role="dialog" aria-modal="true" aria-label="Pilih Metode Pembayaran">
+  <div class="pay-modal-box">
+
+    <!-- STEP 1: Pilih Metode -->
+    <div id="payStep1" class="pay-step active">
+      <button class="pay-close" onclick="ML.closePayment()" aria-label="Tutup">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="pay-header">
+        <div class="pay-title">Pilih Metode Pembayaran</div>
+        <div class="pay-total-row">
+          <span>Total Tagihan</span>
+          <span id="payTotalDisplay" class="pay-total-amt">Rp 0</span>
+        </div>
+      </div>
+      <div class="pay-methods">
+
+        <!-- DANA -->
+        <button class="pay-method-card" data-method="dana" onclick="ML.selectPayMethod('dana')">
+          <div class="pmc-left">
+            <div class="pmc-logo dana-logo">
+              <svg viewBox="0 0 60 24" width="52" height="22">
+                <rect width="60" height="24" rx="4" fill="#118EEA"/>
+                <text x="8" y="17" font-family="Arial Black,sans-serif" font-weight="900" font-size="13" fill="white" letter-spacing="1">DANA</text>
+              </svg>
+            </div>
+            <div class="pmc-info">
+              <div class="pmc-name">DANA</div>
+              <div class="pmc-desc">Dompet digital · Instan</div>
+            </div>
+          </div>
+          <div class="pmc-right">
+            <span class="pmc-tag blue">Populer</span>
+            <svg class="pmc-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </button>
+
+        <!-- GoPay -->
+        <button class="pay-method-card" data-method="gopay" onclick="ML.selectPayMethod('gopay')">
+          <div class="pmc-left">
+            <div class="pmc-logo gopay-logo">
+              <svg viewBox="0 0 70 24" width="58" height="22">
+                <rect width="70" height="24" rx="4" fill="#00AED6"/>
+                <circle cx="12" cy="12" r="8" fill="white" opacity=".2"/>
+                <circle cx="12" cy="12" r="5" fill="white"/>
+                <text x="26" y="17" font-family="Arial,sans-serif" font-weight="800" font-size="12" fill="white">GoPay</text>
+              </svg>
+            </div>
+            <div class="pmc-info">
+              <div class="pmc-name">GoPay</div>
+              <div class="pmc-desc">Dompet Gojek · Langsung cair</div>
+            </div>
+          </div>
+          <div class="pmc-right">
+            <span class="pmc-tag green">Cashback</span>
+            <svg class="pmc-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </button>
+
+        <!-- Alfamart -->
+        <button class="pay-method-card" data-method="alfamart" onclick="ML.selectPayMethod('alfamart')">
+          <div class="pmc-left">
+            <div class="pmc-logo alfa-logo">
+              <svg viewBox="0 0 80 24" width="64" height="22">
+                <rect width="80" height="24" rx="4" fill="#E31E24"/>
+                <rect x="2" y="2" width="20" height="20" rx="2" fill="#F7A800"/>
+                <text x="4" y="16" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" fill="white">A</text>
+                <text x="26" y="17" font-family="Arial,sans-serif" font-weight="800" font-size="11" fill="white" letter-spacing=".5">ALFAMART</text>
+              </svg>
+            </div>
+            <div class="pmc-info">
+              <div class="pmc-name">Alfamart</div>
+              <div class="pmc-desc">Bayar di kasir · Kode unik</div>
+            </div>
+          </div>
+          <div class="pmc-right">
+            <span class="pmc-tag gold">Mudah</span>
+            <svg class="pmc-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </button>
+
+      </div>
+      <div class="pay-secure-note">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Pembayaran diproses aman dengan enkripsi end-to-end
+      </div>
+    </div>
+
+    <!-- STEP 2A: DANA -->
+    <div id="payStep2Dana" class="pay-step">
+      <button class="pay-back" onclick="ML.payBack()" aria-label="Kembali">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Kembali
+      </button>
+      <div class="pay-brand-header dana-bg">
+        <div class="dana-logo-big">
+          <svg viewBox="0 0 90 34" width="86" height="32">
+            <text x="4" y="26" font-family="Arial Black,sans-serif" font-weight="900" font-size="26" fill="white" letter-spacing="2">DANA</text>
+          </svg>
+        </div>
+        <div class="dana-tagline">Dompet Digital Indonesia</div>
+      </div>
+      <div class="dana-body">
+        <div class="dana-phone-wrap">
+          <div class="dana-phone-anim" id="danaPhoneAnim">
+            <div class="dp-screen">
+              <div class="dp-notch"></div>
+              <div class="dp-status">
+                <span>DANA</span>
+                <span id="danaTime">12:00</span>
+              </div>
+              <div class="dp-balance-lbl">Saldo Kamu</div>
+              <div class="dp-balance" id="danaBalance">Rp 250.000</div>
+              <div class="dp-divider"></div>
+              <div class="dp-pay-lbl">Pembayaran ke</div>
+              <div class="dp-merchant">Market L</div>
+              <div class="dp-amount" id="danaPayAmt">Rp 0</div>
+              <div class="dp-btn" id="danaPayBtn" onclick="ML.confirmDana()">Bayar Sekarang</div>
+              <div class="dp-footer">Dijamin aman oleh DANA</div>
+            </div>
+          </div>
+        </div>
+        <div class="dana-instruction">
+          <div class="di-step"><span class="di-num">1</span><span>Pastikan saldo DANA mencukupi</span></div>
+          <div class="di-step"><span class="di-num">2</span><span>Tekan <b>Bayar Sekarang</b> di atas</span></div>
+          <div class="di-step"><span class="di-num">3</span><span>Konfirmasi dengan PIN DANA</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2B: GoPay -->
+    <div id="payStep2Gopay" class="pay-step">
+      <button class="pay-back" onclick="ML.payBack()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Kembali
+      </button>
+      <div class="pay-brand-header gopay-bg">
+        <div class="gopay-logo-big">
+          <svg viewBox="0 0 44 44" width="44" height="44">
+            <circle cx="22" cy="22" r="20" fill="white" opacity=".2"/>
+            <circle cx="22" cy="22" r="14" fill="white" opacity=".3"/>
+            <circle cx="22" cy="22" r="8" fill="white"/>
+          </svg>
+        </div>
+        <div class="gopay-title-txt">GoPay</div>
+        <div class="gopay-sub">by Gojek</div>
+      </div>
+      <div class="gopay-body">
+        <div class="gopay-qr-wrap">
+          <div class="gopay-qr-frame" id="gopayQrFrame">
+            <div class="gqr-inner">
+              <canvas id="gopayQrCanvas" width="140" height="140"></canvas>
+              <div class="gqr-corners">
+                <div class="gqr-c tl"></div><div class="gqr-c tr"></div>
+                <div class="gqr-c bl"></div><div class="gqr-c br"></div>
+              </div>
+            </div>
+            <div class="gqr-logo">
+              <svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="11" fill="#00AED6"/><circle cx="12" cy="12" r="6" fill="white"/><circle cx="12" cy="12" r="3" fill="#00AED6"/></svg>
+            </div>
+          </div>
+          <div class="gqr-exp">QR berlaku <span id="gopayTimer">03:00</span></div>
+        </div>
+        <div class="gopay-instruction">
+          <div class="di-step"><span class="di-num" style="background:#00AED6">1</span><span>Buka aplikasi <b>Gojek</b></span></div>
+          <div class="di-step"><span class="di-num" style="background:#00AED6">2</span><span>Pilih menu <b>GoPay</b> → Scan QR</span></div>
+          <div class="di-step"><span class="di-num" style="background:#00AED6">3</span><span>Arahkan kamera ke QR di atas</span></div>
+        </div>
+        <div class="gopay-total-row">
+          <span>Total</span>
+          <span id="gopayAmt" class="gopay-amt-val">Rp 0</span>
+        </div>
+        <button class="gopay-sim-btn" onclick="ML.simulateGopay()">Simulasi Pembayaran Berhasil</button>
+      </div>
+    </div>
+
+    <!-- STEP 2C: Alfamart -->
+    <div id="payStep2Alfa" class="pay-step">
+      <button class="pay-back" onclick="ML.payBack()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Kembali
+      </button>
+      <div class="pay-brand-header alfa-bg">
+        <div class="alfa-icon">🏪</div>
+        <div class="alfa-title-txt">Alfamart</div>
+        <div class="alfa-sub">Bayar di kasir terdekat</div>
+      </div>
+      <div class="alfa-body">
+        <div class="alfa-code-wrap">
+          <div class="alfa-code-label">Kode Pembayaran</div>
+          <div class="alfa-code-display" id="alfaCodeDisplay">
+            <div class="acd-digits" id="alfaCodeDigits">— — —</div>
+          </div>
+          <div class="alfa-barcode" id="alfaBarcode"></div>
+          <button class="alfa-copy-btn" id="alfaCopyBtn" onclick="ML.copyAlfaCode()">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Salin Kode
+          </button>
+        </div>
+        <div class="alfa-meta">
+          <div class="alfa-meta-row"><span>Total Bayar</span><span id="alfaAmt" class="alfa-amt-val">Rp 0</span></div>
+          <div class="alfa-meta-row"><span>Berlaku hingga</span><span id="alfaExp" class="alfa-exp-val">—</span></div>
+          <div class="alfa-meta-row"><span>Kode gerai</span><span style="color:var(--w70)">ALMT-3612</span></div>
+        </div>
+        <div class="alfa-instruction">
+          <div class="di-step"><span class="di-num" style="background:#E31E24">1</span><span>Pergi ke kasir Alfamart terdekat</span></div>
+          <div class="di-step"><span class="di-num" style="background:#E31E24">2</span><span>Tunjukkan kode di atas ke kasir</span></div>
+          <div class="di-step"><span class="di-num" style="background:#E31E24">3</span><span>Bayar sesuai nominal, minta struk</span></div>
+        </div>
+        <button class="alfa-sim-btn" onclick="ML.simulateAlfa()">Konfirmasi Pembayaran</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Processing -->
+    <div id="payStep3" class="pay-step">
+      <div class="pay-processing">
+        <div class="prc-anim" id="prcAnim"></div>
+        <div class="prc-title" id="prcTitle">Memproses Pembayaran...</div>
+        <div class="prc-sub" id="prcSub">Harap tunggu sebentar</div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Success -->
+    <div id="payStep4" class="pay-step">
+      <div class="pay-success">
+        <div class="ps-ring">
+          <svg class="ps-check" viewBox="0 0 52 52">
+            <circle class="ps-circle" cx="26" cy="26" r="24" fill="none" stroke-width="3"/>
+            <path class="ps-tick" d="M14 27l8 8 16-16" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="ps-title">Pembayaran Berhasil!</div>
+        <div class="ps-sub" id="psSubTxt">Transaksi selesai</div>
+        <div class="ps-receipt" id="psReceipt"></div>
+        <div class="ps-confetti" id="psConfetti"></div>
+        <button class="ps-done-btn" onclick="ML.donePayment()">Lihat Pembelian Saya</button>
+      </div>
+    </div>
+
   </div>
 </div>
 
