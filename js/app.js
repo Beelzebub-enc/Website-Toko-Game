@@ -17,7 +17,7 @@
 ;(function(){'use strict';
 
 /* ═══ STATE ═══ */
-const ST={
+const ST=window._ST={
   products:[],vouchers:[],achievements:[],missions:[],
   cart:[],wish:[],user:null,
   page:'home',heroIdx:0,heroFeat:[],_heroT:null,_dealT:null,
@@ -445,12 +445,14 @@ function updateCartTotal(){
   const dr=$('cartDiscRow');if(dr)dr.style.display=disc>0?'flex':'none';
 }
 function openCart(){
+  if(window.CHECKOUT){window.CHECKOUT.openCart();return;}
   $('cartSidebar')?.classList.add('open');
   $('cartOvr')?.classList.add('on');
   document.body.style.overflow='hidden';
   renderCartItems();
 }
 function closeCart(){
+  if(window.CHECKOUT){window.CHECKOUT.closeCart();return;}
   $('cartSidebar')?.classList.remove('open');
   $('cartOvr')?.classList.remove('on');
   document.body.style.overflow='';
@@ -1009,6 +1011,8 @@ function bindAll(){
 let _payTotal=0, _payMethod='', _gopayTimerIv=null, _alfaCode='';
 
 function openPayment(){
+  if(window.CHECKOUT){window.CHECKOUT.openPayment();return;}
+  
   if(!ST.user){toast('Silakan login terlebih dahulu','err');closeCart();openAuth();return;}
   if(!ST.cart.length){toast('Keranjang masih kosong!','err');return;}
 
@@ -1027,6 +1031,8 @@ function openPayment(){
 }
 
 function closePayment(){
+  if(window.CHECKOUT){window.CHECKOUT.closePayment();return;}
+  
   $('payModal')?.classList.remove('show');
   document.body.style.overflow='';
   if(_gopayTimerIv){clearInterval(_gopayTimerIv);_gopayTimerIv=null;}
