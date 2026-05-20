@@ -1,30 +1,16 @@
 /**
- * ╔═══════════════════════════════════════════════════════════════════╗
- * ║  Market L — Fortress Security Engine v5.0                        ║
- * ║  May 2026 · Zero-Trust · Multi-Layer · Client-Side               ║
- * ║                                                                   ║
- * ║  ENCRYPTION STACK:                                                ║
- * ║  AES-256-GCM  (authenticated encryption, 96-bit IV, 128-bit tag) ║
- * ║  PBKDF2-SHA512  ×600,000 → 3 chained rounds  (GPU/ASIC hostile)  ║
- * ║  HKDF-SHA256  (domain-separated key derivation)                  ║
- * ║  XSalsa20-style XOR stream  (CPU fallback, still strong)         ║
- * ║  Double-envelope: outer AES wraps inner HKDF-derived payload      ║
- * ║                                                                   ║
- * ║  ATTACK MITIGATIONS:                                              ║
- * ║  · Timing attacks      — constant-time comparison on every check  ║
- * ║  · Brute-force         — adaptive exponential backoff (≤1h lock)  ║
- * ║  · User enumeration    — always run full KDF, same time/path      ║
- * ║  · Replay attacks      — per-session nonce + CSRF double-submit   ║
- * ║  · XSS                 — multi-context sanitizer (HTML/URL/JS/CSS)║
- * ║  · CSRF                — rotating tokens, bound to session        ║
- * ║  · Prototype pollution — freeze Object/Array/Function.prototype   ║
- * ║  · Clickjacking        — frame-ancestors 'none' + anti-iframe JS  ║
- * ║  · Side-channel        — buffer zeroization after every use       ║
- * ║  · Session hijacking   — device-fingerprint + idle timeout        ║
- * ║  · Memory scraping     — sensitive strings zeroed post-use        ║
- * ║  · DevTools tampering  — detection + CSRF rotation on open        ║
- * ╚═══════════════════════════════════════════════════════════════════╝
+ * @author     ELTzy
+ * @copyright  2026 ELTzy — All rights reserved.
+ * @watermark  ELTzy::ML5::FORTRESS
+ *
+ * ╔══════════════════════════════════════════════════════════╗
+ * ║  Kode ini adalah karya eksklusif ELTzy.                 ║
+ * ║  Dilarang keras menyalin, mendistribusikan, atau        ║
+ * ║  menggunakan tanpa izin tertulis dari ELTzy.            ║
+ * ║  © 2026 ELTzy · Market L · Fortress Security Engine    ║
+ * ╚══════════════════════════════════════════════════════════╝
  */
+/* ELTzy-SIGNATURE-v5: 4d61726b65744c5f454c547a795f323032365f464f5254524553535f53454355524954595f454e47494e45 */
 ;(function(G){'use strict';
 
 /* ═══════════════════════════════════════════════════
@@ -719,6 +705,19 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',ini
 /* ═══════════════════════════════════════════════════
    §15  PUBLIC API  (frozen)
 ═══════════════════════════════════════════════════ */
+
+/* ── ELTzy Runtime Watermark ── */
+const _ELTZY_WM = Object.freeze({
+  author:    'ELTzy',
+  project:   'Market L',
+  version:   '5.0',
+  copyright: '© 2026 ELTzy — All Rights Reserved',
+  signature: '454c547a79_4d41524b45544c_323032365f5345435552495459',
+  verify()   { return this.author === 'ELTzy' && this.signature.includes('454c547a79'); },
+});
+if(!_ELTZY_WM.verify()) { console.error('[ELTzy] Watermark tampered!'); }
+G._ELTZY = _ELTZY_WM;
+
 G.MLS = Object.freeze({
   Auth, Store, CSRF, RL, San, Val, Sess, Headers, Guard, DeviceFP,
   sha256, sha512, pbkdf2Hash, encrypt, decrypt, hkdf,

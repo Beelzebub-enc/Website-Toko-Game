@@ -1,4 +1,14 @@
 /**
+ * @author     ELTzy
+ * @copyright  2026 ELTzy — All rights reserved.
+ * @watermark  ELTzy::ML6::APP_ENGINE
+ *
+ * Kode ini adalah karya eksklusif ELTzy.
+ * Dilarang keras menyalin tanpa izin dari ELTzy.
+ * © 2026 ELTzy · Market L · App Engine v3.1
+ */
+/* ELTzy-APP-SIG: 454c547a795f4d61726b65744c5f4170705f456e67696e655f76362e30 */
+/**
  * Market L — App Engine v3.1
  * Fixes: cart images, async order, CSS class gaps, norak words removed,
  *        password strength meter, skeleton loading, error boundaries,
@@ -820,8 +830,9 @@ function doSearch(q){
 /* ═══ NAVIGATION ═══ */
 function goPage(page){
   ST.page=page;
-  $$('.ml-page').forEach(p=>p.classList.remove('active'));
-  const el=$('pg-'+page);if(el)el.classList.add('active');
+  $$('.ml-page').forEach(p=>{p.classList.remove('active');p.classList.remove('pg-in');});
+  const el=$('pg-'+page);
+  if(el){ el.classList.add('active'); requestAnimationFrame(()=>el.classList.add('pg-in')); }
   $$('.nav-link').forEach(l=>l.classList.toggle('active',l.dataset.page===page));
   $$('.mob-nav-link').forEach(l=>l.classList.toggle('active',l.dataset.page===page));
   $('mobNav')?.classList.remove('show');
@@ -897,7 +908,7 @@ function toast(msg,type=''){
   el.className='toast-item';
   el.style.cssText='border-left:3px solid '+c;
   el.innerHTML='<span class="toast-ico" style="background:'+c+'22;color:'+c+'">'+ic+'</span>'
-    +'<span class="toast-msg">'+msg+'</span>';
+    +'<span class="toast-msg">'+MLS.San.html(msg).replace(/&lt;b&gt;/g,'<b>').replace(/&lt;\/b&gt;/g,'</b>')+'</span>';
   wrap.appendChild(el);
   requestAnimationFrame(()=>el.classList.add('in'));
   setTimeout(()=>{el.classList.remove('in');setTimeout(()=>el.remove(),350);},3200);
@@ -908,7 +919,8 @@ function bindAll(){
   // Search
   const si=$('searchInput');
   if(si){
-    on(si,'input',e=>doSearch(e.target.value));
+    let _searchT=null;
+  on(si,'input',e=>{clearTimeout(_searchT);_searchT=setTimeout(()=>doSearch(e.target.value),180);});
     on(si,'keydown',e=>{if(e.key==='Escape')$('searchDrop')?.classList.remove('show');});
   }
   // Click outside
@@ -931,6 +943,17 @@ function bindAll(){
   // Auth forms
   $('loginForm')?.addEventListener('submit',handleLogin);
   $('regForm')?.addEventListener('submit',handleRegister);
+  // Pass toggle
+  $$('.pass-toggle').forEach(btn=>{
+    on(btn,'click',()=>{
+      const inp=$(btn.dataset.target);if(!inp)return;
+      const show=inp.type==='password';
+      inp.type=show?'text':'password';
+      btn.innerHTML=show?
+        '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>':
+        '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    });
+  });
   $$('.auth-tab').forEach(t=>on(t,'click',()=>switchAuthTab(t.dataset.tab)));
   // Password strength
   on($('rgPass'),'input',e=>updatePassStrength(e.target.value));
@@ -938,7 +961,7 @@ function bindAll(){
   on($('prodModal'),'click',e=>{if(e.target===$('prodModal'))closeProdModal();});
   on($('authModal'),'click',e=>{if(e.target===$('authModal'))closeAuth();});
   // ESC
-  on(document,'keydown',e=>{if(e.key==='Escape'){closeProdModal();closeAuth();closeAdmin();closeCart();}});
+  on(document,'keydown',e=>{if(e.key==='Escape'){closeProdModal();closeAuth();closeAdmin();closeCart();closePayment();closePayment();}});
   // Web rating
   $$('.wr-star').forEach((btn,i)=>{
     on(btn,'click',()=>{$$('.wr-star').forEach((s,j)=>s.classList.toggle('on',j<=i));rateWeb(i+1);});
@@ -960,26 +983,437 @@ function bindAll(){
     on(cart,'touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
     on(cart,'touchend',e=>{if(e.changedTouches[0].clientX-sx>60)closeCart();},{passive:true});
   }
+  // Touch swipe: featured carousel
+  const featTrk=$('featTrack');
+  if(featTrk){
+    let fsx=0,fscroll=0;
+    on(featTrk,'touchstart',e=>{fsx=e.touches[0].clientX;fscroll=featTrk.scrollLeft;},{passive:true});
+    on(featTrk,'touchmove',e=>{const dx=fsx-e.touches[0].clientX;featTrk.scrollLeft=fscroll+dx;},{passive:true});
+  }
   // Touch swipe: modal
+
   const modal=$('prodModal');
-                if(modal){
+  if(modal){
     let sy=0;
     on(modal,'touchstart',e=>{sy=e.touches[0].clientY;},{passive:true});
     on(modal,'touchend',e=>{if(e.changedTouches[0].clientY-sy>100)closeProdModal();},{passive:true});
   }
 }
 
+
+/* ═══════════════════════════════════════════════════════
+   PAYMENT ENGINE v2.0
+   DANA (phone UI) · GoPay (QR) · Alfamart (barcode)
+   All are demo — payments always succeed after animation
+═══════════════════════════════════════════════════════ */
+let _payTotal=0, _payMethod='', _gopayTimerIv=null, _alfaCode='';
+
+function openPayment(){
+  if(!ST.user){toast('Silakan login terlebih dahulu','err');closeCart();openAuth();return;}
+  if(!ST.cart.length){toast('Keranjang masih kosong!','err');return;}
+
+  const sub=ST.cart.reduce((s,i)=>{const p=ST.products.find(x=>x.id===i.id);return s+(i.finalPrice||p?.price||0);},0);
+  let disc=0;
+  if(ST.appliedVoucher){
+    const v=ST.vouchers.find(x=>x.code===ST.appliedVoucher&&x.active);
+    if(v&&sub>=v.minBuy) disc=v.type==='pct'?Math.min(sub*v.value/100,v.maxSave):v.value;
+  }
+  _payTotal=sub-disc;
+
+  setTxt('payTotalDisplay',fmtRp(_payTotal));
+  payShowStep('payStep1');
+  $('payModal').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+
+function closePayment(){
+  $('payModal')?.classList.remove('show');
+  document.body.style.overflow='';
+  if(_gopayTimerIv){clearInterval(_gopayTimerIv);_gopayTimerIv=null;}
+}
+
+function payShowStep(id){
+  $$('.pay-step').forEach(s=>s.classList.remove('active','back-anim'));
+  const el=$(id);if(!el)return;
+  el.classList.add('active');
+}
+function payBack(){
+  if(_gopayTimerIv){clearInterval(_gopayTimerIv);_gopayTimerIv=null;}
+  const el=$('payStep1');
+  if(el){el.classList.add('active','back-anim');
+  $$('.pay-step').forEach(s=>{if(s.id!=='payStep1')s.classList.remove('active','back-anim');});}
+}
+
+function selectPayMethod(method){
+  _payMethod=method;
+  if(method==='dana')     initDana();
+  else if(method==='gopay')  initGopay();
+  else if(method==='alfamart') initAlfa();
+}
+
+/* ── DANA ── */
+function initDana(){
+  setTxt('danaPayAmt', fmtRp(_payTotal));
+  // Live clock
+  const updateClock=()=>{const now=new Date();setTxt('danaTime',now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0'));};
+  updateClock();setInterval(updateClock,30000);
+  // Animate balance from 0 to 250000
+  let v=0;const target=250000;
+  const iv=setInterval(()=>{v=Math.min(v+12500,target);setTxt('danaBalance','Rp '+v.toLocaleString('id-ID'));if(v>=target)clearInterval(iv);},60);
+  payShowStep('payStep2Dana');
+}
+
+function confirmDana(){
+  const btn=$('danaPayBtn');
+  if(!btn||btn.disabled)return;
+  btn.disabled=true;btn.textContent='Memproses...';
+  // PIN pad animation
+  btn.style.background='linear-gradient(135deg,#0068c8,#004a9a)';
+  payShowStep('payStep3');
+  setTxt('prcTitle','Verifikasi PIN DANA...');
+  setTxt('prcSub','Mengautentikasi pembayaran');
+  const steps=[
+    [800,'Memeriksa saldo...','Saldo mencukupi ✓'],
+    [1600,'Memproses transfer...','Transfer ke Market L'],
+    [2600,'Konfirmasi merchant...','Menunggu respons'],
+    [3400,'',null],
+  ];
+  steps.forEach(([delay,title,sub])=>{
+    if(!title)return;
+    setTimeout(()=>{setTxt('prcTitle',title);if(sub)setTxt('prcSub',sub);},delay);
+  });
+  setTimeout(()=>finishPayment('DANA','Dana',_payTotal), 3800);
+}
+
+/* ── GOPAY QR ── */
+function initGopay(){
+  setTxt('gopayAmt', fmtRp(_payTotal));
+  payShowStep('payStep2Gopay');
+  // Draw QR on canvas
+  setTimeout(()=>drawQR('gopayQrCanvas'),80);
+  // Countdown timer 3:00
+  let secs=180;
+  const el=$('gopayTimer');
+  if(_gopayTimerIv) clearInterval(_gopayTimerIv);
+  _gopayTimerIv=setInterval(()=>{
+    secs--;
+    if(el) el.textContent=Math.floor(secs/60).toString().padStart(2,'0')+':'+
+                          (secs%60).toString().padStart(2,'0');
+    if(secs<=0){
+      clearInterval(_gopayTimerIv);_gopayTimerIv=null;
+      if(el)el.textContent='00:00';
+      if(el)el.style.color='var(--red)';
+    }
+  },1000);
+}
+
+function drawQR(canvasId){
+  const cv=$(canvasId);if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const s=cv.width,cell=Math.floor(s/21);
+  // Generate pseudo-random QR-like pattern seeded by total
+  const seed=_payTotal+Date.now()%100000;
+  const pattern=(i,j)=>{
+    // Finder patterns (fixed corners)
+    if(i<7&&j<7)return 1;if(i<7&&j>13)return 1;if(i>13&&j<7)return 1;
+    // Data modules (seeded)
+    const v=(seed*(i*21+j+1)*2654435761)>>>0;return (v%5)<2?1:0;
+  };
+  ctx.fillStyle='white';ctx.fillRect(0,0,s,s);
+  for(let i=0;i<21;i++)for(let j=0;j<21;j++){
+    if(pattern(i,j)){ctx.fillStyle='#111';ctx.fillRect(j*cell,i*cell,cell-1,cell-1);}
+  }
+  // Center quiet zone for logo
+  ctx.fillStyle='white';ctx.fillRect(s/2-18,s/2-18,36,36);
+}
+
+function simulateGopay(){
+  if(_gopayTimerIv){clearInterval(_gopayTimerIv);_gopayTimerIv=null;}
+  payShowStep('payStep3');
+  setTxt('prcTitle','Membaca QR Code...');
+  setTxt('prcSub','Menghubungkan ke server GoPay');
+  setTimeout(()=>{setTxt('prcTitle','Verifikasi akun Gojek...');setTxt('prcSub','Autentikasi berhasil ✓');},900);
+  setTimeout(()=>{setTxt('prcTitle','Memproses pembayaran...');setTxt('prcSub','GoPay → Market L');},1900);
+  setTimeout(()=>{setTxt('prcTitle','Konfirmasi...');setTxt('prcSub','Menyelesaikan transaksi');},2900);
+  setTimeout(()=>finishPayment('GoPay','GoPay',_payTotal),3600);
+}
+
+/* ── ALFAMART ── */
+function initAlfa(){
+  setTxt('alfaAmt', fmtRp(_payTotal));
+  // Generate unique code
+  const code=[
+    String(Math.floor(Math.random()*900+100)),
+    String(Math.floor(Math.random()*9000+1000)),
+    String(Math.floor(Math.random()*9000+1000)),
+  ];
+  _alfaCode=code.join('');
+  // Animate digits reveal
+  payShowStep('payStep2Alfa');
+  const disp=$('alfaCodeDigits');
+  if(disp){
+    disp.textContent='— — —';
+    setTimeout(()=>{disp.style.letterSpacing='8px';
+      disp.textContent=code[0]+' '+code[1]+' '+code[2];
+      disp.style.animation='codeReveal .5s var(--ease) both';
+    },300);
+  }
+  // Generate barcode
+  setTimeout(()=>drawBarcode('alfaBarcode',_alfaCode), 200);
+  // Expiry: 24h from now
+  const exp=new Date(Date.now()+86400000);
+  setTxt('alfaExp',exp.toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'})+', '+exp.getHours().toString().padStart(2,'0')+':00');
+}
+
+function drawBarcode(containerId, code){
+  const c=$(containerId);if(!c)return;
+  const totalBars=95;const barW=2;const h=56;
+  const bars=[];
+  // EAN-like pattern from code digits
+  const digits=code.padStart(12,'0').split('').map(Number);
+  for(let i=0;i<totalBars;i++){
+    const d=digits[i%digits.length];
+    const w=((d*(i+1)*1103515245+12345)>>>0)%3+1;
+    const dark=(((d+i)*2654435761)>>>0)%4<2;
+    bars.push({w,dark});
+  }
+  const totalW=bars.reduce((s,b)=>s+b.w,0)*barW;
+  let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalW+40} ${h+24}">`
+    +`<rect width="${totalW+40}" height="${h+24}" fill="white" rx="4"/>`;
+  let x=20;
+  bars.forEach(b=>{
+    if(b.dark) svg+=`<rect x="${x}" y="8" width="${b.w*barW-1}" height="${h}" fill="#1a1a1a"/>`;
+    x+=b.w*barW;
+  });
+  // Code text below
+  svg+=`<text x="${(totalW+40)/2}" y="${h+20}" text-anchor="middle" font-family="Courier New,monospace" font-size="9" fill="#333" letter-spacing="2">${code.replace(/(\d{3})(\d{4})(\d{4})/,'$1 $2 $3')}</text>`;
+  svg+='</svg>';
+  c.innerHTML='<div class="alfa-barcode-wrap">'+svg+'</div>';
+}
+
+function copyAlfaCode(){
+  const btn=$('alfaCopyBtn');
+  if(navigator.clipboard) navigator.clipboard.writeText(_alfaCode).then(()=>{
+    if(btn){btn.style.background='rgba(76,168,122,.15)';btn.style.borderColor='rgba(76,168,122,.5)';btn.style.color='var(--green)';btn.innerHTML='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Tersalin!';}
+    setTimeout(()=>{if(btn){btn.style.background='';btn.style.borderColor='';btn.style.color='';btn.innerHTML='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Salin Kode';}},2500);
+  }); else toast('Kode: '+_alfaCode,'ok');
+}
+
+function simulateAlfa(){
+  payShowStep('payStep3');
+  setTxt('prcTitle','Menghubungi server Alfamart...');
+  setTxt('prcSub','Memverifikasi kode pembayaran');
+  setTimeout(()=>{setTxt('prcTitle','Kode ditemukan ✓');setTxt('prcSub','Memvalidasi nominal');},1000);
+  setTimeout(()=>{setTxt('prcTitle','Konfirmasi kasir...');setTxt('prcSub','Pembayaran diterima');},2000);
+  setTimeout(()=>{setTxt('prcTitle','Selesai!');setTxt('prcSub','Struk tersedia di kasir');},3000);
+  setTimeout(()=>finishPayment('Alfamart','Alfamart',_payTotal),3600);
+}
+
+/* ── FINISH PAYMENT (semua metode) ── */
+async function finishPayment(methodLabel, methodKey, total){
+  // Process actual checkout logic
+  const rev=await MLS.Store.getRev();await MLS.Store.setRev(rev+total);
+  const users=await MLS.Store.getUsers();
+  const ui=users.findIndex(u=>u.email===ST.user.email);
+  if(ui>=0){
+    const newP=[...new Set([...(users[ui].purchases||[]),...ST.cart.map(i=>i.id)])];
+    users[ui].purchases=newP;
+    users[ui].points=(users[ui].points||0)+Math.floor(total/1000);
+    await MLS.Store.setUsers(users);
+    ST.user={...users[ui]};
+    await MLS.Sess.create({...ST.user,role:'user'});
+  }
+
+  // Build receipt
+  const txId=MLS.randHex(4).toUpperCase();
+  const now=new Date().toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const receiptHTML=`
+    <div class="ps-receipt-row"><span>Metode</span><span style="color:var(--w80)">${MLS.San.html(methodLabel)}</span></div>
+    <div class="ps-receipt-row"><span>Waktu</span><span style="color:var(--w70)">${now}</span></div>
+    <div class="ps-receipt-row"><span>ID Transaksi</span><span style="color:var(--w70);font-family:monospace">TXN${txId}</span></div>
+    <div class="ps-receipt-row"><span>Item</span><span style="color:var(--w70)">${ST.cart.length} game</span></div>
+    <div class="ps-receipt-row total"><span>Total</span><span>${fmtRp(total)}</span></div>`;
+  setHTML('psReceipt', receiptHTML);
+  setTxt('psSubTxt','via '+methodLabel+' · ID: TXN'+txId);
+  spawnConfetti();
+  payShowStep('payStep4');
+}
+
+function spawnConfetti(){
+  const c=$('psConfetti');if(!c)return;c.innerHTML='';
+  const colors=['#c9a84c','#e8d48b','#fff','#00AED6','#118EEA','#E31E24','#F7A800'];
+  for(let i=0;i<48;i++){
+    const d=document.createElement('div');
+    d.className='confetti-piece';
+    d.style.cssText=`left:${Math.random()*100}%;background:${colors[i%colors.length]};
+      width:${4+Math.random()*8}px;height:${4+Math.random()*8}px;
+      border-radius:${Math.random()>.5?'50%':'2px'};
+      animation:confettiFall ${1.2+Math.random()*1.8}s ease ${Math.random()*.8}s forwards;`;
+    c.appendChild(d);
+  }
+}
+
+function donePayment(){
+  // Clear cart and close
+  ST.cart=[];ST.appliedVoucher=null;
+  MLS.Store.setCart([]);
+  const vi=$('voucherInp');if(vi)vi.value='';
+  const note=$('vchrApplied');if(note)note.style.display='none';
+  updateCartBadge();renderCartItems();
+  closePayment();closeCart();
+  toast('🎉 Pembelian berhasil! Cek Profil → Pembelian.','ok');
+  checkAch('purchase');checkAch('spend');
+  goPage('profile');
+  setTimeout(renderProfile, 200);
+}
+
+
+
+/* ═══════════════════════════════════════════════════════
+   ELTzy EXCLUSIVE EFFECTS v6.0
+   © 2026 ELTzy — All Rights Reserved
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Cursor glow (desktop only) ── */
+function initCursorGlow(){
+  if(window.matchMedia('(hover:none)').matches)return;
+  const el=document.createElement('div');
+  el.id='cursorGlow';document.body.appendChild(el);
+  let mx=0,my=0,cx=0,cy=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;},{passive:true});
+  (function raf(){
+    cx+=(mx-cx)*.08;cy+=(my-cy)*.08;
+    el.style.left=cx+'px';el.style.top=cy+'px';
+    requestAnimationFrame(raf);
+  })();
+}
+
+/* ── Ripple effect on buttons ── */
+function addRipple(e){
+  const btn=e.currentTarget;
+  const rect=btn.getBoundingClientRect();
+  const r=document.createElement('span');
+  const size=Math.max(rect.width,rect.height)*2;
+  r.className='ripple-wave';
+  r.style.width=r.style.height=size+'px';
+  r.style.left=(e.clientX-rect.left-size/2)+'px';
+  r.style.top=(e.clientY-rect.top-size/2)+'px';
+  btn.appendChild(r);
+  r.addEventListener('animationend',()=>r.remove());
+}
+function initRipple(){
+  $$('.checkout-btn,.btn-sm-gold,.form-btn,.gopay-sim-btn,.alfa-sim-btn,.pay-method-card,.ps-done-btn').forEach(btn=>{
+    if(!btn.classList.contains('ripple-origin')){
+      btn.classList.add('ripple-origin');
+      btn.addEventListener('click',addRipple);
+    }
+  });
+}
+
+/* ── 3D Card tilt on mouse ── */
+function initCardTilt(){
+  if(window.matchMedia('(hover:none)').matches)return;
+  on(document,'mousemove',e=>{
+    $$('.prod-card:hover').forEach(card=>{
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width -.5;
+      const y=(e.clientY-r.top) /r.height-.5;
+      card.style.transform=`translateY(-6px) scale(1.01) rotateX(${-y*6}deg) rotateY(${x*6}deg)`;
+    });
+    $$('.prod-card:not(:hover)').forEach(c=>c.style.transform='');
+  },{passive:true});
+  on(document,'mouseleave',()=>$$('.prod-card').forEach(c=>c.style.transform=''));
+}
+
+/* ── Number counter animation for stats ── */
+function animateCount(el, target, suffix='', duration=900){
+  if(!el) return;
+  const start=performance.now();
+  const from=0;
+  (function tick(now){
+    const p=Math.min((now-start)/duration,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(from+(target-from)*ease).toLocaleString('id-ID')+suffix;
+    if(p<1) requestAnimationFrame(tick);
+  })(performance.now());
+}
+
+/* ── Typing effect for hero dev text ── */
+function typeText(el, text, speed=40){
+  if(!el)return;
+  el.textContent='';let i=0;
+  const iv=setInterval(()=>{
+    el.textContent+=text[i++];
+    if(i>=text.length)clearInterval(iv);
+  },speed);
+}
+
+/* ── Live clock for hero area ── */
+function initLiveClock(){
+  const el=$('heroClock');if(!el)return;
+  const tick=()=>{
+    const n=new Date();
+    el.textContent=n.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  };
+  tick();setInterval(tick,1000);
+}
+
+/* ── Back-to-top button ── */
+function initBackToTop(){
+  const btn=document.createElement('button');
+  btn.id='backToTop';
+  btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>';
+  btn.setAttribute('aria-label','Back to top');
+  btn.style.cssText='position:fixed;bottom:80px;right:20px;z-index:999;width:40px;height:40px;border-radius:50%;background:var(--b1a);border:1px solid var(--b28);color:var(--w70);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,background .2s;pointer-events:none;';
+  document.body.appendChild(btn);
+  window.addEventListener('scroll',()=>{
+    const show=scrollY>400;
+    btn.style.opacity=show?'1':'0';
+    btn.style.transform=show?'none':'translateY(10px)';
+    btn.style.pointerEvents=show?'all':'none';
+  },{passive:true});
+  btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  btn.addEventListener('click',addRipple);
+  btn.classList.add('ripple-origin');
+}
+
+/* ── Input validation visual feedback ── */
+function bindInputValidation(){
+  // Email fields: show valid/invalid
+  $$('#liEmail, #rgEmail').forEach(inp=>{
+    on(inp,'blur',()=>{
+      if(!inp.value)return;
+      inp.classList.toggle('valid',   MLS.San.email(inp.value));
+      inp.classList.toggle('invalid', !MLS.San.email(inp.value));
+    });
+    on(inp,'input',()=>{inp.classList.remove('valid','invalid');});
+  });
+  // Password match check
+  const rp2=$('rgPass2');
+  if(rp2){
+    on(rp2,'input',()=>{
+      const p=$('rgPass')?.value,p2=rp2.value;
+      if(!p2)return;
+      rp2.classList.toggle('valid',   p===p2&&p.length>0);
+      rp2.classList.toggle('invalid', p!==p2);
+    });
+  }
+}
+
+
 /* ═══ PUBLIC API ═══ */
 window.ML={
   boot,goPage,openProd,closeProdModal,
   addCart,removeCart,openCart,closeCart,applyVoucher,checkout,
+  openPayment,closePayment,selectPayMethod,payBack,
+  confirmDana,simulateGopay,simulateAlfa,copyAlfaCode,donePayment,
   toggleWish,
   openAuth,closeAuth,switchAuthTab,handleGoogle,handleLogout,
   checkAdminPass,openAdmin,closeAdmin,addVoucher,toggleVoucher,
   filterCat,heroSlide,switchProfTab,toggleMobNav,
   rateWeb,copyVoucher,toast,
+  animateCount,
 };
 
 document.addEventListener('DOMContentLoaded',boot);
 })();
-  
