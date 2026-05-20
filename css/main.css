@@ -296,7 +296,7 @@ button:focus-visible,a:focus-visible,input:focus-visible { outline:2px solid var
   background:rgba(0,0,0,.97); backdrop-filter:blur(24px);
   -webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid rgba(201,168,76,.14);
-  z-index:calc(var(--z2) - 1); padding:12px 0; flex-direction:column;
+  z-index:var(--z4); padding:12px 0; flex-direction:column;
   animation:slideDown .25s var(--ease);
 }
 .mob-nav.show { display:flex; }
@@ -1770,19 +1770,12 @@ html { scroll-behavior: smooth; }
 /* ═══════════════════════════════════
    PAGE TRANSITIONS
    ═══════════════════════════════════ */
-.ml-page {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity .32s var(--ease), transform .32s var(--ease);
-  pointer-events: none;
-}
+/* v8: Simplified page visibility — opacity handled by pgIn animation */
 .ml-page.active {
   display: block !important;
   pointer-events: all;
-}
-.ml-page.active.pg-in {
-  opacity: 1;
-  transform: none;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 /* ═══════════════════════════════════
