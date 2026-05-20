@@ -20,6 +20,8 @@ const _W='ELTzy::CHECKOUT::v8.0::2026';
 
 /* ── Shared state ── */
 let _payTotal=0, _payMethod='', _alfaCode='', _gopayTimerIv=null, _gopayTimeLeft=180;
+// Robust ST accessor — works regardless of load order
+function getState(){ return getState() || window.ST || {}; }
 
 /* ════════════════════════════════════════════
    MEGA CART PANEL
@@ -53,7 +55,7 @@ function mcpTab(tab){
 }
 
 function syncMcpBadges(){
-  const ST=window._ST||{cart:[],wish:[]};
+  const ST=getState()||{cart:[],wish:[]};
   const cb=document.getElementById('cartBadge2');
   const wb=document.getElementById('wishBadge2');
   if(cb) cb.textContent=ST.cart.length||'';
@@ -64,7 +66,7 @@ function syncMcpBadges(){
 }
 
 function renderMcpCart(){
-  const ST=window._ST||{cart:[],products:[]};
+  const ST=getState()||{cart:[],products:[]};
   const list =document.getElementById('mcpCartList');
   const empty=document.getElementById('mcpCartEmpty');
   const panel=document.getElementById('mcpCartPanel');
@@ -78,12 +80,12 @@ function renderMcpCart(){
   if(empty) empty.style.display='none';
   list.innerHTML=ST.cart.map((item,idx)=>{
     const p=ST.products.find(x=>x.id===item.id)||{};
-    const img=p.localImage||`../images/${p.id}.svg`;
+    const img=p.localImage||p.steamImg||`images/${p.id}.svg`;
     const price=item.finalPrice||p.price||0;
     return `<div class="mcp-cart-item" style="animation-delay:${idx*0.05}s">
-      <img class="mcp-item-thumb" src="${img}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 72 42%22><rect width=%2272%22 height=%2242%22 fill=%22%23111%22/><text x=%2236%22 y=%2226%22 text-anchor=%22middle%22 fill=%22%23333%22 font-size=%2210%22>🎮</text></svg>'" alt="${MLS.San.html(p.title||'')}">
+      <img class="mcp-item-thumb" src="${img||p.steamImg}" loading="lazy" alt="${MLS&&MLS.San?MLS.San.html(p.title||p.name||"Game"):""}" onerror="this.onerror=null;this.src='${(p.steamImg||"").replace(/'/g,"%27")}'" >
       <div class="mcp-item-info">
-        <div class="mcp-item-name">${MLS.San.html(p.title||'Produk')}</div>
+        <div class="mcp-item-name">${MLS.San.html(p.title||p.name||'Produk')}</div>
         <div class="mcp-item-plat">${MLS.San.html((p.platforms||[]).slice(0,2).join(' · '))}</div>
         <div class="mcp-item-price">${fmtRp(price)}</div>
       </div>
@@ -96,7 +98,7 @@ function renderMcpCart(){
 }
 
 function mcpRemoveCart(id){
-  if(!window._ST) return;
+  if(!getState()) return;
   _ST.cart=_ST.cart.filter(i=>i.id!==id);
   MLS.Store.setCart(_ST.cart);
   renderMcpCart();
@@ -104,7 +106,7 @@ function mcpRemoveCart(id){
 }
 
 function renderMcpWish(){
-  const ST=window._ST||{wish:[],products:[]};
+  const ST=getState()||{wish:[],products:[]};
   const list =document.getElementById('mcpWishList');
   const empty=document.getElementById('mcpWishEmpty');
   if(!list) return;
@@ -116,12 +118,12 @@ function renderMcpWish(){
   }
   if(empty) empty.style.display='none';
   list.innerHTML=items.map((p,idx)=>{
-    const img=p.localImage||`../images/${p.id}.svg`;
+    const img=p.localImage||p.steamImg||`images/${p.id}.svg`;
     const inCart=ST.cart.some(c=>c.id===p.id);
     return `<div class="mcp-wish-item" style="animation-delay:${idx*0.05}s">
-      <img class="mcp-item-thumb" src="${img}" onerror="this.style.background='var(--b12)'" alt="${MLS.San.html(p.title||'')}">
+      <img class="mcp-item-thumb" src="${img||p.steamImg}" loading="lazy" alt="${MLS&&MLS.San?MLS.San.html(p.title||p.name||"Game"):""}" onerror="this.onerror=null;this.src='${(p.steamImg||"").replace(/'/g,"%27")}'" >
       <div class="mcp-item-info">
-        <div class="mcp-item-name">${MLS.San.html(p.title||'Produk')}</div>
+        <div class="mcp-item-name">${MLS.San.html(p.title||p.name||'Produk')}</div>
         <div class="mcp-item-plat">${MLS.San.html((p.platforms||[]).slice(0,2).join(' · '))}</div>
         <div class="mcp-item-price">${fmtRp(p.price||0)}</div>
       </div>
@@ -137,7 +139,7 @@ function renderMcpWish(){
 }
 
 function mcpWishToCart(id){
-  if(!window._ST) return;
+  if(!getState()) return;
   const p=_ST.products.find(x=>x.id===id);
   if(!p) return;
   if(!_ST.cart.find(c=>c.id===id)){
@@ -151,7 +153,7 @@ function mcpWishToCart(id){
 }
 
 function mcpRemoveWish(id){
-  if(!window._ST) return;
+  if(!getState()) return;
   _ST.wish=_ST.wish.filter(x=>x!==id);
   MLS.Store.setWish(_ST.wish);
   renderMcpWish();
@@ -161,7 +163,7 @@ function mcpRemoveWish(id){
 }
 
 function syncMcpSummary(){
-  const ST=window._ST||{cart:[],products:[],appliedVoucher:null,vouchers:[]};
+  const ST=getState()||{cart:[],products:[],appliedVoucher:null,vouchers:[]};
   const items=document.getElementById('mcpSummaryItems');
   const subEl=document.getElementById('cartSub');
   const totEl=document.getElementById('cartTot');
@@ -184,7 +186,7 @@ function syncMcpSummary(){
         const p=ST.products.find(x=>x.id===ci.id)||{};
         const price=ci.finalPrice||p.price||0;
         return `<div class="mcp-sum-item">
-          <span class="mcp-sum-item-name">${MLS.San.html(p.title||'Produk')}</span>
+          <span class="mcp-sum-item-name">${MLS.San.html(p.title||p.name||'Produk')}</span>
           <span class="mcp-sum-item-price">${fmtRp(price)}</span>
         </div>`;
       }).join('')+(ST.cart.length>5?`<div style="font-size:.7rem;color:var(--w30);padding:4px 0">+${ST.cart.length-5} game lainnya</div>`:'');
@@ -224,7 +226,7 @@ function selectMcpMethod(method){
 }
 
 function doMcpCheckout(){
-  const ST=window._ST||{};
+  const ST=getState()||{};
   if(!ST.user){closeCart();if(typeof openAuth==='function')openAuth();return;}
   if(!ST.cart||!ST.cart.length){return;}
   if(!_payMethod) return;
@@ -257,7 +259,7 @@ function openPayment(method){
   pfsShowStage('pfs1');
   setTxt('pfs1Amount',fmtRp(_payTotal));
 
-  const ST=window._ST||{cart:[],products:[]};
+  const ST=getState()||{cart:[],products:[]};
   const itemNames=ST.cart.slice(0,3).map(i=>(ST.products.find(x=>x.id===i.id)||{}).title||'Game').join(', ');
   setTxt('pfs1Items',ST.cart.length+' game: '+itemNames+(ST.cart.length>3?'...':''));
 
@@ -339,14 +341,18 @@ function initDanaStage(){
   // Amount
   setTxt('ppAmount',fmtRp(_payTotal));
 
-  // Balance bar animation
+  // DANA balance: 367 juta (always >= purchase for UX)
+  const _DANA_BALANCE = 367000000;
   setTimeout(()=>{
     const fill=document.getElementById('ppBalanceFill');
     const balEl=document.getElementById('ppBalance');
-    if(fill){fill.style.width='72%';}
+    // Balance bar: show proportion (capped at 95%)
+    const pct=Math.min(95, 95 - (_payTotal/_DANA_BALANCE)*30);
+    if(fill){setTimeout(()=>{fill.style.width=pct+'%';},200);}
     if(balEl){
-      let v=0;const target=250000;
-      const iv=setInterval(()=>{v=Math.min(v+12500,target);balEl.textContent='Rp\u00a0'+v.toLocaleString('id-ID');if(v>=target)clearInterval(iv);},60);
+      // Animate counter from 0 to 367.000.000
+      let v=0;const target=_DANA_BALANCE;const steps=40;const step=target/steps;
+      const iv=setInterval(()=>{v=Math.min(v+step*3,target);balEl.textContent='Rp\u00a0'+Math.round(v).toLocaleString('id-ID');if(v>=target)clearInterval(iv);},35);
     }
   },400);
 
@@ -358,6 +364,24 @@ function initDanaStage(){
 function danaConfirm(){
   const btn=document.getElementById('ppPayBtn');
   if(!btn||btn.disabled)return;
+  
+  // Balance check: 367 juta
+  const DANA_BALANCE=367000000;
+  if(_payTotal>DANA_BALANCE){
+    // Insufficient balance animation
+    const balEl=document.getElementById('ppBalance');
+    if(balEl){balEl.style.color='#ff4444';balEl.style.animation='shake .4s ease';}
+    const trx=document.getElementById('ppAmount');
+    if(trx){trx.style.color='#ff4444';}
+    btn.innerHTML='<span style="color:#ffcccc">Saldo Tidak Cukup ✗</span>';
+    setTimeout(()=>{
+      btn.innerHTML='<span>Bayar Sekarang</span>';
+      if(balEl){balEl.style.color='';balEl.style.animation='';}
+      if(trx){trx.style.color='';}
+    },2200);
+    return;
+  }
+  
   btn.disabled=true;
   btn.innerHTML='<span style="opacity:.7">Verifikasi PIN...</span>';
   pfsDoneStep('danaStep1');
@@ -535,7 +559,7 @@ function pfsDoneStep(id){const el=document.getElementById(id);if(el)el.className
 
 /* ════════════ FINISH PAYMENT ════════════ */
 async function finishPayment(methodLabel){
-  const ST=window._ST;
+  const ST=getState();
   if(!ST) return;
 
   // Persist purchase
@@ -601,7 +625,7 @@ function spawnSuccessConfetti(){
 }
 
 function donePayment(){
-  const ST=window._ST;
+  const ST=getState();
   if(!ST) return;
   ST.cart=[];ST.appliedVoucher=null;
   MLS.Store.setCart([]);

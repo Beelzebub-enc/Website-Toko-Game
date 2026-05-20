@@ -718,6 +718,38 @@ const _ELTZY_WM = Object.freeze({
 if(!_ELTZY_WM.verify()) { console.error('[ELTzy] Watermark tampered!'); }
 G._ELTZY = _ELTZY_WM;
 
+
+/* ── ELTzy Security: Device Fingerprint v2026 ── */
+async function buildDeviceFingerprint(){
+  const c=navigator.hardwareConcurrency||0;
+  const m=navigator.deviceMemory||0;
+  const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
+  const lang=(navigator.language||'').slice(0,5);
+  const ua=navigator.userAgent.slice(0,60);
+  const screen=`${window.screen.width}x${window.screen.height}x${window.screen.colorDepth}`;
+  const touch='ontouchstart' in window?'T':'D';
+  const raw=`${c}|${m}|${tz}|${lang}|${screen}|${touch}|ELTzy`;
+  // Simple hash
+  let h=0;for(const ch of raw){h=((h<<5)-h)+ch.charCodeAt(0);h|=0;}
+  return Math.abs(h).toString(36);
+}
+
+/* ── Input rate limiter ── */
+function createRateLimiter(maxAttempts,windowMs){
+  const attempts=[];
+  return {
+    check(){
+      const now=Date.now();
+      const recent=attempts.filter(t=>now-t<windowMs);
+      attempts.length=0;attempts.push(...recent,now);
+      return recent.length<maxAttempts;
+    },
+    reset(){attempts.length=0;}
+  };
+}
+const _loginRL=createRateLimiter(5,60000); // 5 attempts per minute
+const _payRL  =createRateLimiter(3,30000); // 3 pay attempts per 30s
+
 G.MLS = Object.freeze({
   Auth, Store, CSRF, RL, San, Val, Sess, Headers, Guard, DeviceFP,
   sha256, sha512, pbkdf2Hash, encrypt, decrypt, hkdf,

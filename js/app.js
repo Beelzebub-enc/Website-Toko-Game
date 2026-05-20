@@ -207,8 +207,8 @@ function renderFeatured(){
     <div class="feat-slide">
       <article class="feat-card" onclick="ML.openProd(${p.id})">
         <div class="feat-img">
-          <img src="${p.steamImg}" alt="${MLS.San.html(p.name)}" loading="lazy"
-            onerror="this.onerror=null;this.src='${p.localImage}'">
+          <img src="${p.localImage||p.steamImg}" alt="${MLS.San.html(p.name)}" loading="lazy"
+            onerror="this.onerror=null;this.src='images/${p.id}.svg'">
           ${p.discount>0?`<span class="disc-badge red">-${p.discount}%</span>`:''}
         </div>
         <div class="feat-body">
@@ -234,7 +234,7 @@ function prodCard(p){
   return `
   <article class="prod-card reveal" onclick="ML.openProd(${p.id})">
     <div class="prod-thumb">
-      <img src="${p.steamImg}" alt="${MLS.San.html(p.name)}" loading="lazy"
+      <img src="${p.localImage||p.steamImg}" alt="${MLS.San.html(p.name)}" loading="lazy"
         onerror="this.onerror=null;this.src='${p.localImage}'">
       ${p.discount>0?`<span class="disc-badge ${p.discount>=50?'red':'gold'}">-${p.discount}%</span>`:''}
       <button class="wish-btn${wished?' on':''}"
@@ -543,6 +543,11 @@ function switchAuthTab(t){
 
 async function handleLogin(e){
   e.preventDefault();
+  // Rate limit check
+  if(typeof MLS!=='undefined'&&MLS.DeviceFP&&!MLS.DeviceFP.loginRL.check()){
+    toast('Terlalu banyak percobaan. Tunggu 1 menit.','err');
+    return;
+  }
   const btn=$('loginBtn'),email=$('liEmail')?.value,pass=$('liPass')?.value;
   if(btn){btn.disabled=true;btn.textContent='Memproses...';}
   const r=await MLS.Auth.login(email,pass);
@@ -553,6 +558,10 @@ async function handleLogin(e){
 
 async function handleRegister(e){
   e.preventDefault();
+  if(typeof MLS!=='undefined'&&MLS.DeviceFP&&!MLS.DeviceFP.loginRL.check()){
+    toast('Terlalu banyak percobaan. Tunggu 1 menit.','err');
+    return;
+  }
   const btn=$('regBtn');
   const name=$('rgName')?.value,email=$('rgEmail')?.value;
   const pass=$('rgPass')?.value,pass2=$('rgPass2')?.value;
@@ -832,9 +841,17 @@ function doSearch(q){
 /* ═══ NAVIGATION ═══ */
 function goPage(page){
   ST.page=page;
-  $$('.ml-page').forEach(p=>{p.classList.remove('active');p.classList.remove('pg-in');});
+  $$('.ml-page').forEach(p=>{p.classList.remove('active','pg-in');p.style.display='none';});
   const el=$('pg-'+page);
-  if(el){ el.classList.add('active'); requestAnimationFrame(()=>el.classList.add('pg-in')); }
+  if(el){
+    el.style.display='block';
+    el.classList.add('active');
+    // Double rAF ensures browser has painted before adding pg-in
+    requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('pg-in')));
+  }
+  // Close mob nav on navigate
+  const nav=$("mobNav");if(nav)nav.classList.remove("show");const btn=$("hdMenuBtn");if(btn)btn.classList.remove("open");
+  document.body.style.overflow="";
   $$('.nav-link').forEach(l=>l.classList.toggle('active',l.dataset.page===page));
   $$('.mob-nav-link').forEach(l=>l.classList.toggle('active',l.dataset.page===page));
   $('mobNav')?.classList.remove('show');
@@ -858,6 +875,11 @@ function toggleMobNav(){
   const open=nav.classList.toggle('show');
   btn.classList.toggle('open',open);
   document.body.style.overflow=open?'hidden':'';
+  // Close cart if open
+  if(open && document.getElementById('cartSidebar')?.classList.contains('open')){
+    if(window.CHECKOUT) window.CHECKOUT.closeCart();
+    else { $('cartSidebar')?.classList.remove('open');$('cartOvr')?.classList.remove('on'); }
+  }
 }
 
 /* ═══ SCROLL + REVEAL ═══ */
@@ -1411,14 +1433,17 @@ function bindInputValidation(){
 window.ML={
   boot,goPage,openProd,closeProdModal,
   addCart,removeCart,openCart,closeCart,applyVoucher,checkout,
-  openPayment,closePayment,selectPayMethod,payBack,
-  confirmDana,simulateGopay,simulateAlfa,copyAlfaCode,donePayment,
+  openPayment,closePayment,simulateGopay,simulateAlfa,copyAlfaCode,donePayment,
   toggleWish,
   openAuth,closeAuth,switchAuthTab,handleGoogle,handleLogout,
   checkAdminPass,openAdmin,closeAdmin,addVoucher,toggleVoucher,
   filterCat,heroSlide,switchProfTab,toggleMobNav,
-  rateWeb,copyVoucher,toast,
-  animateCount,
+  rateWeb,copyVoucher,toast,animateCount,
+  // Checkout delegators
+  mcpTab:function(t){if(window.CHECKOUT)window.CHECKOUT.mcpTab(t);},
+  selectMcpMethod:function(m){if(window.CHECKOUT)window.CHECKOUT.selectMcpMethod(m);},
+  doMcpCheckout:function(){if(window.CHECKOUT)window.CHECKOUT.doMcpCheckout();},
+  danaConfirm:function(){if(window.CHECKOUT)window.CHECKOUT.danaConfirm();},
 };
 
 document.addEventListener('DOMContentLoaded',boot);
